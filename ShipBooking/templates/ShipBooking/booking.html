@@ -1,0 +1,145 @@
+{% extends 'ShipBooking/base.html' %}
+{% block content %}
+<label><b>From:</b></label>
+  <select class="form-control" style="width:20%;" id="ship-from" name="ship_from">
+    <option selected="true" disabled="disabled">Select..</option>
+    {% for i in all_routes %}
+      <option value = {{i.Ship_from}}>{{i.Ship_from}}</option>
+    {% endfor %}
+  </select><br>
+  <label><b>To:</b></label>
+  <select class="form-control" style="width:20%;" id="ship-to" name="ship_to">
+    <option selected="true" disabled="disabled">Select..</option>
+    {% for i in all_routes %}
+      <option value = {{i.Ship_to}}>{{i.Ship_to}}</option>
+    {% endfor %}
+  </select><br>
+  <button class="open-button" id="searchbutton" onclick="getinputvalues()">Search</button>
+
+<div id ="ships_info" >
+  <select id="ship_list" style="display:none;width:20%;">
+    <option selected="true" disabled="disabled">Select Ship No.</option>
+  </select>
+
+</div>
+<div id="ship_info">
+</div>
+
+</div>
+{% endblock %}
+{% block script %}
+<script>
+
+  function getinputvalues(){
+    var ship_list = document.getElementById('ship_list');
+    $(document).ready(function(){
+      ship_list.style.display = "none";
+    });
+    var ship_list = document.getElementById('ship_list');
+      var length = ship_list.options.length;
+      for(i=length-1;i>0;i--){
+        ship_list.options[i] = null;
+      }
+    var shipFrom = document.getElementById("ship-from").value;
+    var shipTo = document.getElementById("ship-to").value;
+    var data = {shipFrom,shipTo};
+    var ajaxResult=[];
+
+    $.ajax({
+      type : 'GET',
+      url : "{% url 'get_ships_info' %}",
+      data : data,
+      success : function(response){
+        ship_list.style.display = "block";
+        if(response.ships_info.length==0){
+          var option = document.createElement("option");
+          option.text = 'No ships found';
+          ship_list.add(option);
+          var h=document.getElementById("ships_info");
+          h.style.display = "none";
+        }
+        else{
+          var h=document.getElementById("ships_info");
+          h.style.display = "block";
+        for(var i=0;i<response.ships_info.length;i++){
+          var option = document.createElement("option");
+          option.text = `${response.ships_info[i].Ship_no}`;
+          ship_list.add(option);
+        }
+      }
+    }
+    })
+
+  }
+
+
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#ship_list").change(function(e){
+   e.preventDefault();
+   var ship_no = $(this).val();
+   var data = {ship_no};
+   $.ajax({
+     type : 'GET',
+     url :  "{% url 'get_user_info' %}",
+     data : data,
+     success : function(response){
+       $("#ship_info").html(`
+       <div class="form-container">
+       <form onsubmit="f1(event);"  action="{% url 'book_tickets' name %}" method="post" id="shipForm">
+         {% csrf_token %}
+         <label><b>Passenger Name:</b></label>
+         <input type="text" id="passenger_name" name="passenger_name" required>
+         <label><b>Ship Number:</b></label>
+         <input type="number" id="ship_no" name="ship_no" value="${response.ship_info.Ship_no}" readonly>
+         <label><b>Start time :</b></label>
+        <input type="number" id="hrs" name="hours" min="0" max="23" value="${response.ship_info.hrs}" readonly>
+        <input type="number" id="mins" name="minutes" min="0" max="59" value="${response.ship_info.mins}" readonly><br>
+        <label><b>Journey Time:</b></label>
+        <input type="number" id="journey_time" name="journey_time" value="${response.ship_info.Journey_time}" readonly>
+        <label><b>Price per seat:</b></label>
+        <input type="number" id="price_per_seat" name="price_per_seat" value="${response.ship_info.Price_per_seat}" readonly>
+        <label><b>Total seats :</b></label>
+        <input type="number" id="total_seats" name="seats" value="${response.ship_info.Total_seats}" readonly>
+        <label><b>Travel Date : </b></label>
+        <input type="date" id="traveldate" name="traveldate" required><br>
+        <label><b>No. of Seats</b></label>
+       <input type="number" id="seats" name="seating" min="1" max="32" id="seats" required>
+       <input class="btn" type="submit" value="Book Ticket">
+       </form>
+       <button class="btn cancel" onclick="location.href='{% url 'view_home' %}'">Cancel</button>
+      </div>      `)
+
+
+     },
+     error : function(response){
+       console.log(response)
+     }
+   })
+  })
+})
+function f1(e){
+e.preventDefault();
+var name=document.getElementById("passenger_name").value;
+var ship_no=document.getElementById("ship_no").value;
+var hrs=document.getElementById("hrs").value;
+var mins=document.getElementById("mins").value;
+var journey_time=document.getElementById("journey_time").value;
+var price_per_seat=document.getElementById("price_per_seat").value;
+var traveldate=document.getElementById("traveldate").value;
+var seats=document.getElementById("seats").value;
+var amount=price_per_seat*seats;
+var s="Name : "+name+"\n"+"Ship No. : "+ship_no+"\n"+"Starting Time : "+hrs+"."+mins+"\n"+"Travel Date : "+traveldate+"\n"+"Total Seats : "+seats+"\n"+"\n"+"Total amount : "+amount+"\n"+"\n"+"ARE YOU SURE ? PRESS OK";
+var form = document.getElementById("shipForm")
+if (confirm(s)) {
+		form.submit();
+	}
+	else{
+		window.history.go(-1);
+	}
+  }
+</script>
+
+
+{% endblock %}

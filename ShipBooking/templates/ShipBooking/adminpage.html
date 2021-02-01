@@ -1,0 +1,54 @@
+{% extends 'ShipBooking/base.html' %}
+{% block content %}
+<button class="open-button" onclick="location.href='{% url 'add_ship' %}'">ADD NEW SHIPS</button>
+<button class="open-button" onclick="location.href='{% url 'add_route' %}'">ADD NEW ROUTES</button><br><br>
+<button class="open-button" onclick="location.href='{% url 'update_ship' 'edit' %}'">UPDATE SHIP DETAILS</button>
+<button class="open-button" onclick="deleteShip()">DELETE SHIP</button><br><br>
+<button class="open-button" onclick="deleteRoute()" >DELETE ROUTE</button>
+<button class="open-button" onclick="location.href='{% url 'view_home' %}'">EXIT</button>
+
+<div class="form-popup" id="delete-ship">
+  <form class="form-container" action="{% url 'delete_ship' %}" method="get">
+    {% csrf_token %}
+    <h1>Delete Ship</h1>
+    <p>select ship to delete :</p>
+    <select id="ship" name="ship_no">
+    <option selected="true" disabled="disabled">Select Ship</option>
+    {% for i in all_ship %}
+    <option value="{{i.Ship_number}}">{{i.Ship_number}}</option>
+    {% endfor %}
+    </select><br>
+    <button type="submit" class="btn">Delete Ship</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+<div class="form-popup" id="delete-ship-route">
+  <form class="form-container" action="{% url 'delete_route' %}" method="get">
+    {% csrf_token %}
+    <h1>Delete Route</h1>
+    <p>select route to delete :</p>
+    <select id="route" name="route">
+    <option selected="true" disabled="disabled">Select Ship Route</option>
+    {% for i in all_routes %}
+    <option value="{{i.Route_id}}">{{i.Route_id}}:{{i.Ship_from}}-{{i.Ship_to}}</option>
+    {% endfor %}
+    </select><br>
+    <button type="submit" class="btn">Delete Route</button>
+    <button type="button" class="btn cancel" onclick="closeRouteForm()">Close</button>
+  </form>
+</div>
+<script>
+  function deleteShip() {
+    document.getElementById("delete-ship").style.display = "block";
+  }
+  function closeForm(){
+    document.getElementById("delete-ship").style.display = "none";
+  }
+  function deleteRoute() {
+    document.getElementById("delete-ship-route").style.display = "block";
+  }
+  function closeRouteForm(){
+    document.getElementById("delete-ship-route").style.display = "none";
+  }
+</script>
+{% endblock %}
