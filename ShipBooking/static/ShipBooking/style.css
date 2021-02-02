@@ -81,3 +81,8 @@ width: 100%;
   padding: 50px;
   margin: 75px 250px;
 }
+
+span {
+  content: "\2197";
+  
+}
