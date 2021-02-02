@@ -186,3 +186,11 @@ def book_tickets(request,name):
 def booking_history(request,name):
     transactions = Transactions.objects.filter(User_name=name)
     return render(request, 'ShipBooking/bookhistory.html', {'transactions':transactions})
+
+# def services(request):
+#     all_routes=AddRouteModel.objects.all()
+#     all_ships=AddShipModel.objects.all()
+#     if request.method == "GET":
+#         ship_no = request.GET.get("ship_no")
+#         AddShipModel.objects.get(Ship_number=ship_no).delete()
+#         return render(request, 'ShipBooking/services.html',{'all_ships':all_ships,'all_routes':all_routes})

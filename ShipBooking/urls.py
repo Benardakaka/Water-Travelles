@@ -7,6 +7,7 @@ urlpatterns = [
     path('new_user', views.new_user, name='new_user'),
     path('user_login', views.user_login, name='user_login'),
     path('add_ship', views.add_ship, name='add_ship'),
+    # path('services', views.services,name='services'),
     path('add_route', views.add_route, name='add_route'),
     path('update_ship/<str:action>', views.update_ship, name='update_ship'),
     path('ajax/get_user_info', views.getUserInfo, name = 'get_user_info'),

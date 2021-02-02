@@ -1,0 +1,44 @@
+{% extends 'base.html' %}{% block styles%}
+{{ super() }}
+<!-- <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}" type="text/css"> -->
+{% endblock styles%}
+<!-- Content block -->
+{% block content %}
+
+<div class="container-fluid">
+  <div class="jumbotron">
+<h1 style="text-align: center; color: blue;"><span><strong>ABOUT US</strong></span></h1>
+
+<div class="container" style="font-size: 20px; font-family: 'Times New Roman', Times, serif; font-size: 15px;">
+
+  <img src="../static/images/ships.png"
+    style="float:right; width: 320px; height: 210px; margin-top: 30px; margin-right: 100px;">
+
+  <h1>Our Marine Captains</h1>
+  <p>Our community of Marine-Travellers all receive extensive training to make them</br>
+    safe when travelling over water and most professionalcaptains on the ports.</p>
+  <ul>
+    <li>Trained them water safety, first aid, ship maintenance and customer care</li>
+    <li>Equipped with hairnets and a spare helmet</li>
+    <li>We deliver them free big oxygen tanks </li>
+    <li>Identifiable and trackable through our system</li>
+  </ul>
+  <p style="color: black;">Marine transportation also encompasses passenger transportation, military and defense,
+     fishing or marine resource applications, and maritime support such as navigation or
+      vessel maintenance. All of these applications contribute to the overall environmental impact of marine transportation,
+     though not as significantly as trade dominates the sector (Walker et al., 2019).</p>
+</div>
+</div>
+
+<!-- footer -->
+<br><br><br><br><br>
+<footer class="footer mt-4" style="background-color: blue;text-align: center;padding: 1em;">
+  <div class="social-icons">
+    <i class="fa fa-2x fa-facebook"></i>
+    <i class="fa fa-2x fa-twitter"></i>
+    <i class="fa fa-2x fa-instagram"></i>
+  </div>
+  <p class="text-center pt-2">Copyright &copy; 2020 Design by Marine-Travellers</p>
+</footer>
+</div>
+{% endblock %}
