@@ -7,7 +7,7 @@
   <input type="number" name="ship_no" required><br>
   <label ><b>Route:</b></label>
     <select id="route" name="route">
-    <option selected="true" disabled="disabled">Select Ship Route</option>
+    <option selected="true" disabled="disabled">Select Ship Route .</option>
     {% for i in all_routes %}
     <option value="{{i.Route_id}}">{{i.Route_id}}:{{i.Ship_from}}-{{i.Ship_to}}</option>
     {% endfor %}
